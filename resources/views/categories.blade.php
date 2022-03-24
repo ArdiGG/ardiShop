@@ -3,15 +3,20 @@
 @section('title', 'Все Категории')
 
 @section('content')
-        @foreach($categories as $category)
-            <div class="panel">
+
+    <h1>Все категории</h1>
+
+    <div class="row">
+            @foreach($categories as $category)
+            <div class="col-sm-3 col-md-4">
                 <a href="{{route('category', $category->code)}}">
-                    <img src="http://internet-shop.tmweb.ru/storage/categories/mobile.jpg">
+                    <img src="{{ Storage::url($category->image) }}" width="250px" height="200px">
                     <h2>{{$category->name}}</h2>
                 </a>
                 <p>
                     {{$category->description}}
                 </p>
             </div>
-        @endforeach
+            @endforeach
+        </div>
 @endsection

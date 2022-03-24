@@ -21,7 +21,7 @@
                     <tr>
                         <td>
                             <a href="{{route('product', [$product->category->code, $product->code])}}">
-                                <img height="56px" src="http://internet-shop.tmweb.ru/storage/products/iphone_x.jpg">
+                                <img height="56px" src="{{ Storage::url($product->image) }}">
                                 {{$product->name}}
                             </a>
                         </td>
@@ -64,7 +64,7 @@
             </div>
             <div>
                 <h4>
-                    Перейти в <a href="{{ route('index') }}">каталог товаров</a>
+                    Перейти в <a href="{{ route('home') }}">каталог товаров</a>
                 </h4>
             </div>
         @endif

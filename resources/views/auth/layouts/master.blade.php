@@ -23,7 +23,7 @@
 <div id="app">
     <nav class="navbar navbar-default navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('index') }}">
+            <a class="navbar-brand" href="{{ route('home') }}">
                 Вернуться на сайт
             </a>
 
@@ -32,7 +32,7 @@
                     <li><a href="{{ route('categories.index') }}">Категории</a></li>
                     <li><a href="{{ route('products.index') }}">Товары</a>
                     </li>
-                    <li><a href="http://laravel-diplom-1.rdavydov.ru/admin/orders">Заказы</a></li>
+                    <li><a href="{{ route('orders.index') }}">Заказы</a></li>
                 </ul>
 
                 @guest

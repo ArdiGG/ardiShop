@@ -1,4 +1,4 @@
-@extends('auth.layouts.master')
+@extends('layouts.master')
 
 @section('title', 'Заказы')
 
@@ -37,7 +37,7 @@
                     <td>
                         <div class="btn-group" role="group">
                             <a class="btn btn-success" type="button"
-                               href="{{ route('orders.show', $order) }}">Открыть</a>
+                               href="{{ route('person.orders.show', $order) }}">Открыть</a>
                         </div>
                     </td>
                 </tr>

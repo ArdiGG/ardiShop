@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="col-md-12">
-        <h1>Категории</h1>
+        <h1>Товары</h1>
         <table class="table">
             <tbody>
             <tr>
@@ -42,6 +42,6 @@
             </tbody>
         </table>
         <a class="btn btn-success" type="button"
-           href="{{ route('products.create') }}">Добавить категорию</a>
+           href="{{ route('products.create') }}">Добавить товар</a>
     </div>
 @endsection

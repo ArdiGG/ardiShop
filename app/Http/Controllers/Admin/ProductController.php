@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
@@ -36,10 +38,14 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        Product::create($request->all());
+        $data = $request->all();
+        if (isset($data['image'])) {
+            $data['image'] = $request->file('image')->store('products');
+        }
 
+        Product::create($data);
         return redirect()->route('products.index');
     }
 
@@ -73,9 +79,16 @@ class ProductController extends Controller
      * @param  \App\Models\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        $product->update($request->all());
+        $data = $request->all();
+
+        if (isset($data['image'])) {
+            Storage::delete($product->image);
+            $data['image'] = $request->file('image')->store('products');
+        }
+
+        $product->update($data);
         return redirect()->route('products.index');
     }
 

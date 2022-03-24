@@ -29,32 +29,44 @@
                 <div class="input-group row">
                     <label for="code" class="col-sm-2 col-form-label">Код: </label>
                     <div class="col-sm-6">
+                        @error('code')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         <input type="text" class="form-control" name="code" id="code"
-                               value="{{ $category->code ?? "" }}">
+                               value="{{ old('code', $category->code ?? "") }}">
                     </div>
                 </div>
                 <br>
                 <div class="input-group row">
                     <label for="name" class="col-sm-2 col-form-label">Название: </label>
                     <div class="col-sm-6">
+                        @error('name')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         <input type="text" class="form-control" name="name" id="name"
-                               value="{{ $category->name ?? "" }}">
+                               value="{{ old('name', $category->name ?? "") }}">
                     </div>
                 </div>
                 <br>
                 <div class="input-group row">
                     <label for="description" class="col-sm-2 col-form-label">Описание: </label>
                     <div class="col-sm-6">
+                        @error('description')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
 							<textarea name="description" id="description" cols="72"
-                                      rows="7">{{ $category->description ?? "" }}</textarea>
+                                      rows="7">{{ old('description', $category->description ?? "") }}</textarea>
                     </div>
                 </div>
                 <br>
                 <div class="input-group row">
                     <label for="image" class="col-sm-2 col-form-label">Картинка: </label>
                     <div class="col-sm-10">
+                        @error('image')
+                        <div class="alert alert-danger">{{ $message }}</div>
+                        @enderror
                         <label class="btn btn-default btn-file">
-                            Загрузить <input type="file" style="display: none;" name="image" id="image">
+                            Загрузить <input type="file" style="display: none;" name="image" id="image" value="{{$category->image ?? ""}}">
                         </label>
                     </div>
                 </div>

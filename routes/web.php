@@ -21,19 +21,29 @@ Auth::routes([
 
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('get-logout');
 
-Route::group([
-    'middleware' => 'auth',
-    'prefix' => 'admin',
-], function () {
-    Route::group(['middleware' => 'is_admin'], function () {
-        Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('home');
+Route::middleware(['auth'])->group(function() {
+    Route::group([
+        'prefix' => 'person',
+        'as' => 'person.',
+    ], function (){
+        Route::get('/orders', [\App\Http\Controllers\Person\OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{order}', [\App\Http\Controllers\Person\OrderController::class, 'show'])->name('orders.show');
     });
 
-    Route::resource('products',  \App\Http\Controllers\Admin\ProductController::class);
-    Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    Route::group([
+        'prefix' => 'admin',
+    ], function () {
+        Route::group(['middleware' => 'is_admin'], function () {
+            Route::get('/orders', [\App\Http\Controllers\Admin\OrderController::class, 'index'])->name('orders.index');
+            Route::get('/orders/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('orders.show');
+        });
+
+        Route::resource('products',  \App\Http\Controllers\Admin\ProductController::class);
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
+    });
 });
 
-Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('index');
+Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('home');
 
 Route::group(['prefix' => 'basket'], function (){
     Route::get('/', [\App\Http\Controllers\BasketController::class, 'basket'])->name('basket');
@@ -45,5 +55,5 @@ Route::group(['prefix' => 'basket'], function (){
 
 Route::get('/categories', [\App\Http\Controllers\MainController::class, 'categories'])->name('categories');
 Route::get('/category/{category}', [\App\Http\Controllers\MainController::class, 'category'])->name('category');
-Route::get('/{category}/{product}', [\App\Http\Controllers\MainController::class, 'product'])->name('product');
+Route::get('/categories/{category}/{product}', [\App\Http\Controllers\MainController::class, 'product'])->name('product');
 

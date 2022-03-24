@@ -47,7 +47,7 @@ class BasketController extends Controller
             session()->flash('warning', 'Произошла ошибка');
         }
 
-        return redirect()->route('index');
+        return redirect()->route('home');
     }
 
     public function store($productId)
