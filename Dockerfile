@@ -1,0 +1,3 @@
+FROM laravel
+
+COPY . /dockerApp
