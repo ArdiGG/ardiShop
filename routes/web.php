@@ -21,6 +21,8 @@ Auth::routes([
 
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('get-logout');
 
+Route::get('/reset', [\App\Http\Controllers\ResetController::class, 'reset'])->name('reset');
+
 Route::middleware(['auth'])->group(function() {
     Route::group([
         'prefix' => 'person',

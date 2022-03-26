@@ -41,7 +41,8 @@
             @endforeach
             </tbody>
         </table>
-        <a class="btn btn-success" type="button"
+        {{ $products->links() }}
+        <a class="btn btn-success mt-4" type="button"
            href="{{ route('products.create') }}">Добавить товар</a>
     </div>
 @endsection
