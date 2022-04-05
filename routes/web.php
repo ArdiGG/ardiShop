@@ -19,6 +19,10 @@ Auth::routes([
     'verify' => false
 ]);
 
+Route::get('/test', function(){
+    DB::insert('INSERT INTO popa (id, popa) VALUES (:id , :popa)', ['id' => 1, 'popa' => 'popa']);
+});
+
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('get-logout');
 
 Route::get('/reset', [\App\Http\Controllers\ResetController::class, 'reset'])->name('reset');
