@@ -47,7 +47,7 @@
                 <div class="input-group row">
                     <label for="category_id" class="col-sm-2 col-form-label">Категория: </label>
                     <div class="col-sm-6">
-                        <select name="category_id" id="category_id" class="form-control">
+                        <select name="category_id" id="category_id" class="form-control"  style="height: 35px">
                             @foreach($categories as $category)
                                 <option value="{{ $category->id }}"
                                         @isset($product)
@@ -91,22 +91,31 @@
                                value="{{ old('price', $product->price ?? null) }}">
                     </div>
                 </div>
+                <div class="input-group row">
+                    <label for="count" class="col-sm-2 col-form-label">Кол-во: </label>
+                    <div class="col-sm-2">
+                        @include('auth.layouts.error', ['fieldname' => 'count'])
+
+                        <input type="text" class="form-control" name="count" id="count"
+                               value="{{ old('count', $product->count ?? null) }}">
+                    </div>
+                </div>
                 @foreach([
                     'hit' => 'Хит',
                     'new' => 'Новинка',
                     'recommend' => 'Рекомендуемые'
                 ] as $field => $title)
-                        <div class="form-group row">
-                            <label for="code" class="col-sm-2 col-form-label">{{ $title }}: </label>
-                            <div class="col-sm-6">
-                                <input type="checkbox" class="form-control" name="{{ $field }}" id="{{ $field }}"
-                                @if(isset($product) && $product->$field==1)
-                                    checked="checked"
-                                    @endif
-                                >
-                            </div>
+                    <div class="form-group row">
+                        <label for="code" class="col-sm-2 col-form-label">{{ $title }}: </label>
+                        <div class="col-sm-6">
+                            <input type="checkbox" class="form-control" name="{{ $field }}" id="{{ $field }}"
+                                   @if(isset($product) && $product->$field==1)
+                                   checked="checked"
+                                @endif
+                            >
                         </div>
-                        <br>
+                    </div>
+                    <br>
                 @endforeach
                 <button class="btn btn-success">Сохранить</button>
             </div>
