@@ -1,19 +1,19 @@
 @extends('layouts.master')
 
-@section('title', 'Корзина')
+@section('title', __('basket.cart'))
 
 @section('content')
     <div class="panel">
-        @if($order->products->count() != 0)
-            <h1>Корзина</h1>
-            <p>Оформление заказа</p>
+        @if(isset($order) && $order->products->count() != 0)
+            <h1>@lang('basket.cart')</h1>
+            <p>@lang('basket.ordering')</p>
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>Название</th>
-                    <th>Кол-во</th>
-                    <th>Цена</th>
-                    <th>Стоимость</th>
+                    <th>@lang('basket.name')</th>
+                    <th>@lang('basket.count')</th>
+                    <th>@lang('basket.price')</th>
+                    <th>@lang('basket.cost')</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,32 +39,31 @@
                                 </form>
                             </div>
                         </td>
-                        <td>{{$product->price}} руб.</td>
-                        <td>{{$product->getPriceForCount()}} руб.</td>
+                        <td>{{ $product->price }} @lang('main.rub').</td>
+                        <td>{{ $product->getPriceForCount() }} @lang('main.rub').</td>
                     </tr>
                 @endforeach
 
                 <tr>
-                    <td colspan="3">Общая стоимость:</td>
-                    <td>{{$order->getFullSum()}} руб.</td>
+                    <td colspan="3">@lang('basket.full_cost'):</td>
+                    <td>{{ $order->getFullSum() }} @lang('main.rub').</td>
                 </tr>
                 </tbody>
             </table>
             <br>
             <div class="btn-group pull-right" role="group">
-                <a type="button" class="btn btn-success" href="{{ route('basket-place') }}">Оформить
-                    заказ</a>
+                <a type="button" class="btn btn-success" href="{{ route('basket-place') }}">@lang('basket.place_order')</a>
             </div>
         @else
             <div>
                 <img src="img/basket.png" width="400px" alt="">
             </div>
             <div>
-                <h3 class="blockquote-footer">Корзина пуста</h3>
+                <h3 class="blockquote-footer">{{__('basket.cart_is_empty')}}</h3>
             </div>
             <div>
                 <h4>
-                    Перейти в <a href="{{ route('home') }}">каталог товаров</a>
+                    @lang('basket.go_to') <a href="{{ route('home') }}">@lang('basket.catalog')</a>
                 </h4>
             </div>
         @endif

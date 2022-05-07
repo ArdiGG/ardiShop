@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Basket;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -15,98 +16,53 @@ class BasketController extends Controller
         $orderId = session('orderId');
         if (!is_null($orderId)) {
             $order = Order::findOrFail($orderId);
-        } else {
-            $order = Order::create();
-            session(['orderId' => $order->id]);
         }
 
-        return view('basket', compact('order'));
+        return view('basket', ['order' => $order ?? null]);
     }
 
     public function basketPlace()
     {
-        $orderId = session('orderId');
-        if(is_null($orderId)){
-            return redirect()->route('index');
+        $basket = new Basket();
+        $order = $basket->getOrder();
+        if(!$basket->countAvailable()){
+            session()->flash('warning', __('basket.you_cant_order_more'));
+            return redirect()->route('basket');
         }
-        $order = Order::find($orderId);
         return view('order', compact('order'));
     }
 
     public function basketConfirm(Request $request)
     {
-        $orderId = session('orderId');
-        if (is_null($orderId)) {
-            return redirect()->route('index');
-        }
-        $order = Order::find($orderId);
-        $success = $order->saveOrder($request->name, $request->phone);
+        $email = Auth::check() ? Auth::user()->email : $request->email;
 
-        if ($success) {
-            session()->flash('success', 'Ваш заказ принят в обработку!');
+        if ((new Basket())->saveOrder($request->name, $request->phone, $email)) {
+            session()->flash('success', __('basket.you_order_confirmed'));
         } else {
-            session()->flash('warning', 'Произошла ошибка');
+            session()->flash('warning', __('basket.you_cant_order_more'));
         }
 
         Order::eraseFullSum();
 
-        return redirect()->route('home');
-    }
-
-    public function store($productId)
-    {
-        $orderId = session('orderId');
-        if (is_null($orderId)) {
-            $order = Order::create();
-            session(['orderId' => $order->id]);
-        } else {
-            $order = Order::find($orderId);
-        }
-        if ($order->products->contains($productId)) {
-            $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot;
-            $pivotRow->count++;
-            $pivotRow->update();
-        }else {
-            $order->products()->attach($productId);
-        }
-
-        if(Auth::check()){
-            $order->user_id = Auth::id();
-            $order->save();
-        }
-
-        $product = Product::find($productId);
-
-        Order::changeFullSum($product->price);
-
-        session()->flash('success', 'Добавлен товар ' . $product->name);
-
         return redirect()->route('basket');
     }
 
-    public function remove($productId)
+    public function store(Product $product)
     {
-        $orderId = session('orderId');
-        if (is_null($orderId)) {
-            return redirect()->route('basket');
+        $result = (new Basket(true))->addProduct($product);
+        if($result) {
+            session()->flash('success', __('basket.added') . $product->name);
+        } else {
+            session()->flash('warning', $product->name . __('basket.not_available_more'));
         }
-        $order = Order::find($orderId);
+        return redirect()->route('basket');
+    }
 
-        if ($order->products->contains($productId)) {
-            $pivotRow = $order->products()->where('product_id', $productId)->first()->pivot;
-            if ($pivotRow->count < 2) {
-                $order->products()->detach($productId);
-            } else {
-                $pivotRow->count--;
-                $pivotRow->update();
-            }
-        }
+    public function remove(Product $product)
+    {
+        (new Basket())->removeProduct($product);
 
-        $product = Product::find($productId);
-
-        Order::changeFullSum(-$product->price);
-
-        session()->flash('warning', 'Удален товар  ' . $product->name);
+        session()->flash('warning', __('basket.removed') . $product->name);
 
         return redirect()->route('basket');
     }

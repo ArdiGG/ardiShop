@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h1>Все категории</h1>
+    <h1>@lang('main.all_categories')</h1>
 
     <div class="row">
             @foreach($categories as $category)
