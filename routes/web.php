@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,5 +73,13 @@ Route::middleware('set_locale')->group(function () {
     Route::get('/categories', [\App\Http\Controllers\MainController::class, 'categories'])->name('categories');
     Route::get('/category/{category}', [\App\Http\Controllers\MainController::class, 'category'])->name('category');
     Route::get('/categories/{category}/{product}', [\App\Http\Controllers\MainController::class, 'product'])->name('product');
+
+    //authWithGoogle
+    Route::get('/auth/google', [\App\Http\Controllers\SocialController::class, 'googleRedirect'])->name('google');
+    Route::get('/auth/google/callback', [\App\Http\Controllers\SocialController::class, 'loginWithGoogle']);
+
+    //authWithFacebook
+    Route::get('/auth/facebook', [\App\Http\Controllers\SocialController::class, 'facebookRedirect'])->name('facebook');
+    Route::get('/auth/facebook/callback', [\App\Http\Controllers\SocialController::class, 'loginWithFacebook']);
 
 });

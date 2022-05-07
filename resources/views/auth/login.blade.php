@@ -10,27 +10,34 @@
             <div class="card-body">
                 <form method="POST" action="{{ route('login') }}" aria-label="Login">
                     @csrf
-                    <div class="form-group row">
-                        <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail</label>
 
-                        <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
+                            <a href="{{route('google')}}" class="btn btn-danger btn-block">Login with Google</a>
+                            <a href="{{route('facebook')}}" class="btn btn-primary btn-block">Login with Facebook</a>
+                        </div>
+                    </div>
+
+                    <p style="text-align: center">OR</p>
+
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
                             <input id="email" type="email" class="form-control"
-                                   name="email" value="" required autofocus>
+                                   name="email" value="" required autofocus placeholder="Email">
 
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        <label for="password" class="col-md-4 col-form-label text-md-right">Пароль</label>
 
-                        <div class="col-md-6">
+                    <div class="form-group row">
+                        <div class="col-md-6 offset-md-3">
                             <input id="password" type="password" class="form-control"
-                                   name="password" required>
+                                   name="password" required placeholder="Password">
 
                         </div>
                     </div>
                     <div class="form-group row mb-0">
-                        <div class="col-md-8 offset-md-4">
+                        <div class="col-md-8 offset-md-3">
                             <button type="submit" class="btn btn-primary">
                                 Войти
                             </button>

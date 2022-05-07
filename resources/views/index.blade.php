@@ -38,7 +38,7 @@
             </div>
         </div>
     </form>
-    <div class="row">
+    <div class="row" style="margin-top: 15px">
         @foreach($products as $product)
             @include('layouts.card', compact('product'))
         @endforeach

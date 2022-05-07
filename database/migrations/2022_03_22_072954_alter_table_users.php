@@ -18,7 +18,7 @@ class AlterTableUsers extends Migration
         });
     }
 
-    /**
+    /**d
      * Reverse the migrations.
      *
      * @return void
