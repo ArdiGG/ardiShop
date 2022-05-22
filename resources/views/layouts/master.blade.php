@@ -36,7 +36,7 @@
 
                 @auth
                     @if(Auth::user()->isAdmin())
-                        <li><a href="{{ route('home') }}">@lang('main.admin_panel')</a></li>
+                        <li><a href="{{ route('orders.index') }}">@lang('main.admin_panel')</a></li>
                     @else
                         <li><a href="{{ route('person.orders.index') }}">@lang('main.my_orders')</a></li>
                     @endif

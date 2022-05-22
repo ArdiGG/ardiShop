@@ -21,7 +21,7 @@
         @include('auth.layouts.error', ['fieldname' => 'email']);
         <form action="{{ route('subscription', $product) }}" method="POST">
             @csrf
-            <input type="text" name="email">
+            <input type="text" placeholder="Email" name="email">
             <button type="submit">@lang('product.subscribe')</button>
         </form>
     @endif

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +21,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
     use AuthenticatesUsers;
 
     /**
@@ -27,9 +28,11 @@ class LoginController extends Controller
      *
      * @var string
      */
+
+
     protected function redirectTo()
     {
-        if(Auth::user()->isAdmin()){
+        if (Auth::user()->isAdmin()) {
             return route('orders.index');
         }
         return route('home');

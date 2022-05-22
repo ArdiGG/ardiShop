@@ -15,9 +15,10 @@ class CreateAuthsTable extends Migration
     {
         Schema::create('auths', function (Blueprint $table) {
             $table->id();
+            $table->integer('user_id');
             $table->string('type');
-            $table->string('social_id');
-            $table->string('password');
+            $table->string('social_id')->nullable();
+            $table->string('password')->nullable();
             $table->timestamps();
         });
     }

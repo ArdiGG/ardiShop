@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Auth extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['user_id', 'type', 'social_id', 'password'];
+
+    public function create()
+    {
+
+    }
 }
