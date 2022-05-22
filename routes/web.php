@@ -26,7 +26,7 @@ Auth::routes([
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
 
-Route::post('/login/check',[\App\Http\Controllers\CheckCreditsController::class, 'login'])->name('native');
+Route::post('/login/check', [\App\Http\Controllers\CheckCreditsController::class, 'login'])->name('native');
 
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('get-logout');
 
@@ -76,12 +76,7 @@ Route::middleware('set_locale')->group(function () {
     Route::get('/category/{category}', [\App\Http\Controllers\MainController::class, 'category'])->name('category');
     Route::get('/categories/{category}/{product}', [\App\Http\Controllers\MainController::class, 'product'])->name('product');
 
-    //authWithGoogle
-    Route::get('/auth/google', [\App\Http\Controllers\SocialController::class, 'googleRedirect'])->name('google');
-    Route::get('/auth/google/callback', [\App\Http\Controllers\SocialController::class, 'loginWithGoogle']);
-
-    //authWithFacebook
-    Route::get('/auth/facebook', [\App\Http\Controllers\SocialController::class, 'facebookRedirect'])->name('facebook');
-    Route::get('/auth/facebook/callback', [\App\Http\Controllers\SocialController::class, 'loginWithFacebook']);
-
+    //Social Auth
+    Route::get('/auth/{type}', [\App\Http\Controllers\SocialController::class, 'redirect'])->name('social.redirect');
+    Route::get('/auth/{type}/callback', [\App\Http\Controllers\SocialController::class, 'login'])->name('social.login');
 });

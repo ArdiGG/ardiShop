@@ -13,8 +13,8 @@
 
                     <div class="form-group row">
                         <div class="col-md-6 offset-md-3">
-                            <a href="{{route('google')}}" class="btn btn-danger btn-block">Login with Google</a>
-                            <a href="{{route('facebook')}}" class="btn btn-primary btn-block">Login with Facebook</a>
+                            <a href="{{route('social.redirect', 'google')}}" class="btn btn-danger btn-block">Login with Google</a>
+                            <a href="{{route('social.redirect', 'facebook')}}" class="btn btn-primary btn-block">Login with Facebook</a>
                         </div>
                     </div>
 
