@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Actions\UserCreateAction;
 use App\Http\Controllers\Controller;
-use App\Models\Auth;
+use App\Http\Requests\UserRequest;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Services\UserService;
 use Dotenv\Exception\ValidationException;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -27,7 +29,7 @@ class RegisterController extends Controller
 
     use RegistersUsers;
 
-    private $userService;
+    private UserCreateAction $userCreateAction;
     /**
      * Where to redirect users after registration.
      *
@@ -43,37 +45,30 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct(UserService $userService)
+    public function __construct(UserCreateAction $userCreateAction)
     {
         $this->middleware('guest');
-        $this->userService = $userService;
+        $this->userCreateAction = $userCreateAction;
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param array $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
+
+    public function index()
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        return view('auth.register');
     }
-
     /**
      * Create a new user instance after a valid registration.
      *
      * @param array $data
      * @return \App\Models\User
      */
-    protected function create(array $data)
+    protected function create(UserRequest $request)
     {
-        $user = $this->userService->login($data);
+        $userData = $request->all();
+        $user = $this->userCreateAction->run($userData);
 
-        return $user;
+        Auth::login($user);
+
+        return redirect('/');
     }
 }

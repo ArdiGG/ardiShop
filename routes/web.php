@@ -19,8 +19,12 @@ use Laravel\Socialite\Facades\Socialite;
 Auth::routes([
     'reset' => false,
     'confirm' => false,
-    'verify' => false
+    'verify' => false,
+    'register' => false
 ]);
+
+Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
+Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
 
 Route::post('/login/check',[\App\Http\Controllers\CheckCreditsController::class, 'login'])->name('native');
 

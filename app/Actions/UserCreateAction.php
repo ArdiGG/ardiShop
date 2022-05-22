@@ -16,10 +16,12 @@ class UserCreateAction
         $this->authRepository = $authRepository;
     }
 
-    public function run($googleUser)
+    public function run($userData)
     {
-        $user = $this->userRepository->create($googleUser);
-        $this->authRepository->create($googleUser->id, $user->id);
+        $password = $userData['password'];
+
+        $user = $this->userRepository->create($userData);
+        $this->authRepository->create($user->id, $password);
 
         return $user;
     }

@@ -6,12 +6,12 @@ use App\Models\User;
 
 class UserRepository
 {
-    public function create($googleUser): User
+    public function create(array $userData): User
     {
-        $user = User::where('email', $googleUser->email)->firstOrCreate([
-            'name' => $googleUser->name,
-            'email' => $googleUser->email,
-        ]);
+        $user = User::firstOrCreate([
+            'email' => $userData['email']
+        ],
+        ['name' => $userData['name']]);
 
         return $user;
     }

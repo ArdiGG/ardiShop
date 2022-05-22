@@ -3,16 +3,17 @@
 namespace App\Repositories;
 
 use App\Models\Auth as AuthTable;
+use Illuminate\Support\Facades\Hash;
 
 class AuthRepository
 {
-    public function create($googleUser_id, $user_id)
+    public function create($user_id, $password)
     {
-        AuthTable::where('type', 'google')->where('social_id', $googleUser_id)->firstOrCreate([
+        AuthTable::create([
             'user_id' => $user_id,
-            'type' => 'google',
-            'social_id' => $googleUser_id,
-            'password' => null,
+            'type' => 'native',
+            'social_id' => null,
+            'password' => Hash::make($password),
         ]);
     }
 }
