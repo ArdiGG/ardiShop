@@ -50,7 +50,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $this->service->store($request);
+        $data = $request->all();
+        $data['load_image'] = $request->file('image');
+
+        $this->service->store($data);
 
         return redirect()->route('products.index');
     }
@@ -88,7 +91,10 @@ class ProductController extends Controller
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $this->service->update($request, $product);
+        $data = $request->all();
+        $data['load_image'] = $request->file('image') ?? null;
+
+        $this->service->update($data, $product);
 
         return redirect()->route('products.index');
     }
