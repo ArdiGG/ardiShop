@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SocialLoginAction;
 use App\Actions\UserCreateAction;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,11 +17,11 @@ class SocialController extends Controller
         return Socialite::driver('google')->redirect();
     }
 
-    public function loginWithGoogle(UserCreateAction $userCreate)
+    public function loginWithGoogle(SocialLoginAction $socialLogin)
     {
         $googleUser = Socialite::driver('google')->user();
 
-        $user = $userCreate->run($googleUser);
+        $user = $socialLogin->run($googleUser, 'google');
 
         Auth::login($user);
 
