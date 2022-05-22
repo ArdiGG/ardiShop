@@ -26,7 +26,7 @@ Auth::routes([
 Route::get('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'index'])->name('register.index');
 Route::post('/register', [\App\Http\Controllers\Auth\RegisterController::class, 'create'])->name('register');
 
-Route::post('/login/check', [\App\Http\Controllers\CheckCreditsController::class, 'login'])->name('native');
+Route::post('/login/check', [\App\Http\Controllers\Auth\CheckCreditsController::class, 'login'])->name('native');
 
 Route::get('/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout'])->name('get-logout');
 
@@ -61,12 +61,12 @@ Route::middleware('set_locale')->group(function () {
     Route::get('/', [\App\Http\Controllers\MainController::class, 'index'])->name('home');
 
     Route::group(['prefix' => 'basket'], function () {
-        Route::post('/add/{product}', [\App\Http\Controllers\BasketController::class, 'store'])->name('basket-add');
-        Route::get('/', [\App\Http\Controllers\BasketController::class, 'basket'])->name('basket');
+        Route::post('/add/{product}', [\App\Http\Controllers\Basket\BasketController::class, 'store'])->name('basket-add');
+        Route::get('/', [\App\Http\Controllers\Basket\BasketController::class, 'basket'])->name('basket');
         Route::group(['middleware' => 'basket_not_empty'], function () {
-            Route::get('/place', [\App\Http\Controllers\BasketController::class, 'basketPlace'])->name('basket-place');
-            Route::post('/place', [\App\Http\Controllers\BasketController::class, 'basketConfirm'])->name('basket-confirm');
-            Route::post('/remove/{product}', [\App\Http\Controllers\BasketController::class, 'remove'])->name('basket-remove');
+            Route::get('/place', [\App\Http\Controllers\Basket\BasketController::class, 'basketPlace'])->name('basket-place');
+            Route::post('/place', [\App\Http\Controllers\Basket\BasketController::class, 'basketConfirm'])->name('basket-confirm');
+            Route::post('/remove/{product}', [\App\Http\Controllers\Basket\BasketController::class, 'remove'])->name('basket-remove');
         });
     });
 

@@ -1,50 +1,51 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Services\Basket;
 
 use App\Helpers\Basket;
 use App\Models\Order;
 use App\Models\Product;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use phpDocumentor\Reflection\Types\Object_;
 
-class BasketController extends Controller
+class BasketService
 {
-    public function basket()
+    public function index()
     {
         $orderId = session('orderId');
+        $order = null;
+
         if (!is_null($orderId)) {
             $order = Order::findOrFail($orderId);
         }
 
-        return view('basket', ['order' => $order ?? null]);
+        return $order;
     }
 
-    public function basketPlace()
+    public function place()
     {
         $basket = new Basket();
+
         $order = $basket->getOrder();
+
         if(!$basket->countAvailable()){
             session()->flash('warning', __('basket.you_cant_order_more'));
             return redirect()->route('basket');
         }
-        return view('order', compact('order'));
+
+        return $order;
     }
 
-    public function basketConfirm(Request $request)
+    public function confirm(array $data)
     {
-        $email = Auth::check() ? Auth::user()->email : $request->email;
+        $email = Auth::check() ? Auth::user()->email : $data['email'];
 
-        if ((new Basket())->saveOrder($request->name, $request->phone, $email)) {
+        if ((new Basket())->saveOrder($data['name'], $data['phone'], $email)) {
             session()->flash('success', __('basket.you_order_confirmed'));
         } else {
             session()->flash('warning', __('basket.you_cant_order_more'));
         }
 
         Order::eraseFullSum();
-
-        return redirect()->route('basket');
     }
 
     public function store(Product $product)
@@ -55,7 +56,6 @@ class BasketController extends Controller
         } else {
             session()->flash('warning', $product->name . __('basket.not_available_more'));
         }
-        return redirect()->route('basket');
     }
 
     public function remove(Product $product)
@@ -63,7 +63,5 @@ class BasketController extends Controller
         (new Basket())->removeProduct($product);
 
         session()->flash('warning', __('basket.removed') . $product->name);
-
-        return redirect()->route('basket');
     }
 }
