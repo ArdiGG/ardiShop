@@ -6,11 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use App\Services\Product\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
+    private ProductService $service;
+
+    public function __construct(ProductService $service)
+    {
+        $this->service = $service;
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -30,30 +38,27 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::get();
+
         return view('auth.products.form', compact('categories'));
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(ProductRequest $request)
     {
-        $data = $request->all();
-        if (isset($data['image'])) {
-            $data['image'] = $request->file('image')->store('products');
-        }
+        $this->service->store($request);
 
-        Product::create($data);
         return redirect()->route('products.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -64,49 +69,40 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
     {
         $categories = Category::get();
+
         return view('auth.products.form', compact('product', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function update(ProductRequest $request, Product $product)
     {
-        $data = $request->all();
-        if (isset($data['image'])) {
-            Storage::delete($product->image);
-            $data['image'] = $request->file('image')->store('products');
-        }
+        $this->service->update($request, $product);
 
-        foreach (['new', 'hit', 'recommend'] as $fieldName){
-            if(!isset($data[$fieldName])){
-                $data[$fieldName] = 0;
-            }
-        }
-
-        $product->update($data);
         return redirect()->route('products.index');
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)
     {
         $product->delete();
+
         return redirect()->route('products.index');
     }
 }
