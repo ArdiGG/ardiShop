@@ -18,6 +18,7 @@ class Basket
 
     public function __construct($createOrder = false)
     {
+
         $orderId = session('orderId');
 
         if (is_null($orderId) && $createOrder) {
@@ -60,15 +61,17 @@ class Basket
         return true;
     }
 
-    public function saveOrder($name, $phone, $email)
+    public function saveOrder($data)
     {
         if(!$this->countAvailable(true)){
             return false;
         }
 
-        Mail::to($email)->send(new OrderCreated($name, $this->getOrder()));
+        Mail::to($data['email'])->send(new OrderCreated($data['name'], $this->getOrder()));
 
-        return $this->order->saveOrder($name, $phone);
+
+
+        return $this->order->saveOrder($data);
     }
 
     public function getPivotRow(Product $product)

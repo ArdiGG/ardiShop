@@ -46,7 +46,7 @@ class Order extends Model
     public function calculateFullSum()
     {
         $sum = 0;
-        foreach ($this->products()->withTrashed()->get() as $product){
+        foreach ($this->products()->withTrashed()->get() as $product) {
             $sum += $product->getPriceForCount();
         }
 
@@ -66,18 +66,23 @@ class Order extends Model
 
     public static function getFullSum()
     {
-        return  session('full_order_sum',0);
+        return session('full_order_sum', 0);
     }
 
-    public function saveOrder($name, $phone)
+    public function saveOrder($data)
     {
-        if($this->status == 0){
-        $this->name = $name;
-        $this->phone = $phone;
-        $this->status = 1;
-    $this->save();
-        session()->forget('orderId');
-        return true;
+        if ($this->status == 0) {
+            $this->name = $data['name'];
+            $this->phone = $data['phone'];
+            $this->status = 1;
+            $this->email = $data['email'];
+            $this->address = $data['address'];
+
+            $this->save();
+
+            session()->forget('orderId');
+
+            return true;
         } else {
             return false;
         }

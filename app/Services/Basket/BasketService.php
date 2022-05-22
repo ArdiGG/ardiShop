@@ -37,9 +37,9 @@ class BasketService
 
     public function confirm(array $data)
     {
-        $email = Auth::check() ? Auth::user()->email : $data['email'];
+        $data['email'] = Auth::check() ? Auth::user()->email : $data['email'];
 
-        if ((new Basket())->saveOrder($data['name'], $data['phone'], $email)) {
+        if ((new Basket())->saveOrder($data)) {
             session()->flash('success', __('basket.you_order_confirmed'));
         } else {
             session()->flash('warning', __('basket.you_cant_order_more'));
@@ -51,6 +51,7 @@ class BasketService
     public function store(Product $product)
     {
         $result = (new Basket(true))->addProduct($product);
+
         if($result) {
             session()->flash('success', __('basket.added') . $product->name);
         } else {

@@ -28,6 +28,14 @@
                         </div>
                         <br>
                         <br>
+                        <div class="form-group">
+                            <label for="address" class="control-label col-lg-offset-3 col-lg-2">Адрес: </label>
+                            <div class="col-lg-4">
+                                <input type="text" name="address" id="address" value="" class="form-control">
+                            </div>
+                        </div>
+                        <br>
+                        <br>
                         @guest
                             <div class="form-group">
                                 <label for="name" class="control-label col-lg-offset-3 col-lg-2">@lang('basket.data.email'): </label>

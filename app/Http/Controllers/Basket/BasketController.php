@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Basket;
 
 use App\Helpers\Basket;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\BasketRequest;
 use App\Models\Order;
 use App\Models\Product;
 use App\Services\Basket\BasketService;
@@ -34,7 +35,7 @@ class BasketController extends Controller
         return view('order', compact('order'));
     }
 
-    public function basketConfirm(Request $request)
+    public function basketConfirm(BasketRequest $request)
     {
         $data = $request->all();
 
