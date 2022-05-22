@@ -63,15 +63,7 @@ class MainController extends Controller
 
     public function changeLocale($locale)
     {
-        $availibleLocales = ['ru', 'en'];
-
-        if (!in_array($locale, $availibleLocales)) {
-            $locale = config('app.locale');
-        }
-
-        session(['locale' => $locale]);
-
-        App::setLocale($locale);
+        $this->service->changeLocale($locale);
 
         return redirect()->back();
     }
