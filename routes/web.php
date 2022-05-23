@@ -41,7 +41,6 @@ Route::get('/locale/{locale}', [MainController::class, 'changeLocale'])->name('l
 Route::get('/reset', [\App\Http\Controllers\ResetController::class, 'reset'])->name('reset');
 
 Route::middleware('set_locale')->group(function () {
-
     Route::middleware(['auth'])->group(function () {
         Route::group([
             'prefix' => 'person',

@@ -35,7 +35,7 @@ class AuthController extends Controller
             $auth = \App\Models\Auth::where('user_id', $user->id)->where('type', 'native')->first();
 
             if (isset($auth) && Hash::check($credentials['password'], $auth->password)) {
-                $token = auth()->login($user);
+                $token = auth('api')->login($user);
 
                 return $this->respondWithToken($token);
             }
@@ -88,7 +88,7 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => auth()->factory()->getTTL() * 60
+            'expires_in' => auth('api')->factory()->getTTL() * 60
         ]);
     }
 }

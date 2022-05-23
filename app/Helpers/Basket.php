@@ -108,6 +108,7 @@ class Basket
                 return false;
             }
             $this->order->products()->attach($product->id);
+            dd($this->order->products());
         }
 
         Order::changeFullSum($product->price);

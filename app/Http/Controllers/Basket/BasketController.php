@@ -37,8 +37,8 @@ class BasketController extends Controller
 
     public function basketConfirm(BasketRequest $request)
     {
+        dd("chych");
         $data = $request->all();
-
         $this->service->confirm($data);
 
         return redirect()->route('basket');
