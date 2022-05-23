@@ -65,10 +65,8 @@ class RegisterController extends Controller
     protected function create(UserRequest $request)
     {
         $userData = $request->all();
-        $user = $this->userCreateAction->run($userData);
+        $this->userCreateAction->run($userData);
 
-        Auth::login($user);
-
-        return redirect('/');
+        return redirect()->back();
     }
 }

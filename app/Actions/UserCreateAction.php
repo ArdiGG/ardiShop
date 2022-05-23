@@ -21,8 +21,6 @@ class UserCreateAction
         $password = $userData['password'];
 
         $user = $this->userRepository->create($userData);
-        $this->authRepository->create($user->id, $password);
-
-        return $user;
+        $this->authRepository->create($user, $password);
     }
 }
