@@ -6,23 +6,28 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Models\Auth;
 use App\Models\User;
+use App\Services\Auth\CheckCreditsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class CheckCreditsController extends Controller
 {
+    private CheckCreditsService $service;
+
+    public function __construct(CheckCreditsService $service)
+    {
+        $this->service = $service;
+    }
+
     public function login(LoginRequest $request)
     {
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password
+        ];
 
-        $user = User::where('email', $request->email)->first();
-
-        if (isset($user)) {
-            $auth = Auth::where('user_id', $user->id)->where('type', 'native')->first();
-
-            if(isset($auth) && Hash::check($request->password, $auth->password)) {
-                \Illuminate\Support\Facades\Auth::login($user);
-                return redirect('/');
-            }
+        if ($this->service->attempt($data)) {
+            return redirect('/');
         }
 
         return redirect()->back();
