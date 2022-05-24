@@ -6,6 +6,10 @@
     <h1>@lang('main.all_products')</h1>
     <form method="GET" action="{{route("home")}}">
         <div class="filters row">
+            <div class="input-group" style="display: flex; margin-bottom: 20px;justify-content: center">
+                <input id="name" name="name" value="{{ request()->name }}" type="search" style="width: 500px;" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                <button type="submit" class="btn btn-outline-primary">search</button>
+            </div>
             <div class="col-sm-6 col-md-3">
                 <label for="price_from">@lang('main.price_from')
                     <input type="text" name="price_from" id="price_from" size="6" value="{{ request()->price_from}}">

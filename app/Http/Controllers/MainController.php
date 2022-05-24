@@ -22,8 +22,7 @@ class MainController extends Controller
 
     public function index(ProductsFilterRequest $request)
     {
-        $data = $request->all();
-        $data['query_string'] = $request->getQueryString();
+        $data = array_filter($request->validated());
 
         $products = $this->service->index($data);
 
