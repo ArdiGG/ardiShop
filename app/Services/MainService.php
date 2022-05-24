@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Filters\ProductFilter;
 use App\Http\Requests\ProductsFilterRequest;
 use App\Models\Product;
 use Illuminate\Support\Facades\App;
@@ -10,15 +11,9 @@ class MainService
 {
     public function index(array $data)
     {
-        $productsQuery = Product::with('category');
+        $filter = app()->make(ProductFilter::class, ['queryParams' => array_filter($data)]);
 
-        if (isset($data['price_from'])) {
-            $productsQuery->where('price', '>=', $data['price_from']);
-        }
-
-        if (isset($data['price_to'])) {
-            $productsQuery->where('price', '<=', $data['price_to']);
-        }
+        $productsQuery = Product::with('category')->filter($filter);
 
         foreach (['hit', 'recommend', 'new'] as $field) {
             if (isset($data[$field])) {
@@ -26,7 +21,7 @@ class MainService
             }
         }
 
-        $products = $productsQuery->orderByDesc('id')->paginate(6)->withPath("?" . $data['query_string']);
+        $products = $productsQuery->orderBy('id')->paginate(6);
 
         return $products;
     }

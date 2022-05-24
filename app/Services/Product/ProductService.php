@@ -4,7 +4,7 @@ namespace App\Services\Product;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
-use App\Traits\UploadTrait;
+use App\Traits\Uploadable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -12,12 +12,14 @@ use Ramsey\Uuid\Uuid;
 
 class ProductService
 {
-    use UploadTrait;
+    use Uploadable;
 
 
     public function store(array $data)
     {
-        $data['image'] = $this->uploadImage($data['load_image']);
+        if (isset($data['load_image'])) {
+            $data['image'] = $this->uploadImage($data['load_image']);
+        }
 
         Product::create($data);
     }

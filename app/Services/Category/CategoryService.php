@@ -4,11 +4,14 @@ namespace App\Services\Category;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Traits\Uploadable;
 use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
 class CategoryService
 {
+    use Uploadable;
+
     public function store(array $data)
     {
         $data['image'] = $this->uploadImage($data['load_image']);
