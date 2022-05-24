@@ -8,10 +8,14 @@ class UserRepository
 {
     public function create(array $userData): User
     {
-        $user = User::firstOrCreate([
-            'email' => $userData['email']
-        ],
-        ['name' => $userData['name']]);
+        $user = User::firstOrCreate(
+            [
+                'email' => $userData['email']
+            ],
+            [
+                'name' => $userData['name'],
+                'email' => $userData['email'],
+            ]);
 
         return $user;
     }

@@ -15,12 +15,17 @@ class SocialLoginAction
             ],
 
             [
+                'email' => $userData->email,
                 'name' => $userData->name
             ]
 
         );
 
         Auth::firstOrCreate([
+            'user_id' => $user->id,
+            'type' => $type,
+            'social_id' => $userData->id
+        ], [
             'user_id' => $user->id,
             'type' => $type,
             'social_id' => $userData->id
